@@ -39,12 +39,21 @@
   }
 
   // O número aparece escrito na página a partir do config, no mesmo formato das artes.
-  var local = NUMERO.indexOf("55") === 0 && NUMERO.length > 11 ? NUMERO.slice(2) : NUMERO;
-  var shown = local.length === 11
-    ? "(" + local.slice(0, 2) + ") " + local.charAt(2) + "." + local.slice(3, 7) + "-" + local.slice(7)
-    : maskPhone(local);
-  each(document.querySelectorAll("[data-whats-text]"), function (el) { el.textContent = shown; });
-  each(document.querySelectorAll("[data-whats-link]"), function (el) { el.href = BASE; });
+  // Sempre sem o 55 na frente.
+  function escrito(numero) {
+    var local = numero.indexOf("55") === 0 && numero.length > 11 ? numero.slice(2) : numero;
+    return local.length === 11
+      ? "(" + local.slice(0, 2) + ") " + local.charAt(2) + "." + local.slice(3, 7) + "-" + local.slice(7)
+      : maskPhone(local);
+  }
+  function publicar(numero, nome) {
+    if (!numero) return;
+    each(document.querySelectorAll("[data-" + nome + "-text]"), function (el) { el.textContent = escrito(numero); });
+    each(document.querySelectorAll("[data-" + nome + "-link]"), function (el) { el.href = "https://wa.me/" + numero; });
+  }
+  publicar(NUMERO, "whats");
+  // Segundo contato (Adm da franquia): só aparece escrito, não recebe as fichas.
+  publicar(String(CONFIG.whatsappAdm || "").replace(/\D/g, ""), "adm");
 
   var fields = Array.prototype.map.call(form.querySelectorAll("[data-field]"), function (el) {
     return {

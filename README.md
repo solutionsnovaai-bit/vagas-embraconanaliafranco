@@ -37,6 +37,10 @@ Abra `js/config.js` e mude `whatsapp` (55 + DDD + número, só os dígitos).
 O número escrito na página é atualizado sozinho. O `index.html` também traz o número
 escrito como reserva para quem abre sem JavaScript; vale trocar lá também (busque por `wa.me`).
 
+O segundo contato que aparece no hero, ao lado da ficha e no rodapé é o `whatsappAdm`, no mesmo
+arquivo. Ele só aparece escrito na página: as fichas continuam chegando no `whatsapp`. O nome e o
+cargo de cada contato ficam no `index.html` (busque por `contato-quem`).
+
 ## Mudar as perguntas da ficha
 
 As perguntas ficam no `index.html`, dentro de `<form id="ficha-form">`.

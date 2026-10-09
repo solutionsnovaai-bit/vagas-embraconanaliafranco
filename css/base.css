@@ -216,6 +216,13 @@ a { color: inherit; }
 }
 .foot-big:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 8px; }
 .foot-big:focus-visible { outline: 3px solid var(--white); outline-offset: 6px; }
+
+/* Contato: número, nome e cargo. Usado no hero, na ficha e no rodapé (sempre sobre o vermelho). */
+.contato { display: grid; justify-items: start; gap: 2px; }
+.contato + .contato { margin-top: 14px; }
+.contato-quem { display: grid; font-size: .9375rem; line-height: 1.35; }
+.contato-quem b { font-weight: 700; }
+.contato-quem span { color: var(--on-red-dim); }
 .foot-legal {
   display: flex;
   flex-wrap: wrap;

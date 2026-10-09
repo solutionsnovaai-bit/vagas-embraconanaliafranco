@@ -401,6 +401,14 @@ html.hero-in .hero-figure {
 html.hero-in .hero-shadow { transition: opacity .9s ease 1s; }
 @keyframes squeeze { from { font-stretch: 112%; } to { font-stretch: 62%; } }
 
+/* Telas largas e baixas (notebook): o painel vermelho aperta para os dois contatos caberem. */
+@media (min-width: 1000px) and (max-height: 760px) {
+  .hero-side { gap: 16px; padding-top: 8px; }
+  .hero-side .logo { --logo-w: min(100%, 240px); }
+  .hero-points li { padding-block: 8px; }
+  .hero-call .contato + .contato { margin-top: 8px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .intro { animation: intro-safety .3s linear .9s forwards; }
   .intro .lg-mao, .intro .lg-consorcio, .intro .lg-embracon, .intro-tag, .intro-bar i,
