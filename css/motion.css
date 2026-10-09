@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Movimento ligado à rolagem. Só vale quando o script liga a classe
+   "motion-on" no <html>: sem script, tudo aparece parado e legível.
+   ========================================================================== */
+
+/* sobe e aparece */
+.motion-on [data-reveal] {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .9s var(--ease), transform 1s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.motion-on [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* título que sobe por trás de uma máscara */
+.motion-on [data-reveal="mask"] {
+  opacity: 1;
+  transform: none;
+  /* folga em cima para não cortar os acentos das maiúsculas */
+  clip-path: inset(-.22em -100vw 0 -100vw);
+}
+.motion-on [data-reveal="mask"] > .m {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 1.05s var(--ease);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+.motion-on [data-reveal="mask"].is-in > .m { transform: none; }
+
+/* texto que acende conforme a rolagem */
+.motion-on [data-scrub] .w { color: var(--ghost); }
+.motion-on [data-scrub] .w.is-lit { color: var(--ink); }
+.motion-on [data-scrub] .w.hot.is-lit { color: var(--red); }
+
+/* ícones que se desenham */
+.motion-on .draw > * { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.2s var(--ease-in-out); transition-delay: calc(var(--i, 0) * 90ms + .25s); }
+.motion-on .is-in .draw > *, .motion-on .draw.is-in > * { stroke-dashoffset: 0; }
+
+/* deslocamento suave com a rolagem e com o mouse */
+[data-parallax] { transform: translate3d(var(--px, 0px), var(--py, 0px), 0); will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-on [data-reveal],
+  .motion-on [data-reveal="mask"] > .m {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .motion-on [data-scrub] .w { color: inherit; }
+  .motion-on [data-scrub] .w.hot { color: var(--red); }
+  .motion-on .draw > * { stroke-dashoffset: 0; transition: none; }
+  [data-parallax] { transform: none; }
+}

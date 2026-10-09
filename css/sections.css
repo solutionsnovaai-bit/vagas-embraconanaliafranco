@@ -1,0 +1,235 @@
+/* ==========================================================================
+   Seções: faixa em movimento, sobre nós, benefícios, como funciona e a
+   chamada da ficha.
+   ========================================================================== */
+
+/* ---------- Faixa em movimento ---------- */
+.ticker {
+  overflow: hidden;
+  padding-block: 16px;
+  border-block: 1px solid var(--line);
+  background: var(--white);
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 36s linear infinite;
+  will-change: transform;
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-set {
+  display: flex;
+  flex: none;
+  align-items: center;
+  font-size: clamp(2.3rem, 1.4rem + 4vw, 4.4rem);
+}
+.ticker-set span { padding-inline: .4em; white-space: nowrap; }
+.ticker-set .is-red { color: var(--red); }
+.ticker-set i, .pilar i {
+  display: inline-block;
+  flex: none;
+  width: .34em;
+  height: .64em;
+  background: var(--red);
+  transform: skewX(calc(var(--angle) * -1));
+}
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+/* ---------- Sobre nós ---------- */
+.sobre { padding-block: clamp(72px, 10vw, 150px) 0; }
+.sobre-grid { display: grid; gap: 26px; }
+.sobre-text {
+  max-width: 23em;
+  font-size: clamp(1.5rem, 1.05rem + 2.1vw, 2.4rem);
+  font-weight: 500;
+  font-stretch: 94%;
+  line-height: 1.27;
+  letter-spacing: -.012em;
+}
+.sobre-text em { font-style: normal; }
+.sobre-text .w { transition: color .4s ease; }
+
+/* palavras gigantes que deslizam em sentidos opostos conforme a rolagem */
+.pilares {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .02em;
+  margin-top: clamp(56px, 8vw, 120px);
+  padding-block: 6px;
+  overflow: hidden;
+}
+.pilar {
+  display: flex;
+  align-items: center;
+  gap: .22em;
+  width: max-content;
+  font-size: clamp(3.4rem, 1.2rem + 11.5vw, 11.5rem);
+  white-space: nowrap;
+  transform: translate3d(var(--drift, 0px), 0, 0);
+  will-change: transform;
+}
+.pilar:nth-child(2) { color: var(--red); justify-self: end; }
+.pilar:nth-child(2) i { background: var(--ink); }
+
+/* ---------- Benefícios ---------- */
+.beneficios {
+  --cut: clamp(40px, 7vw, 110px);
+  position: relative;
+  margin-top: clamp(40px, 6vw, 90px);
+  padding-block: calc(var(--cut) + clamp(64px, 8vw, 110px)) clamp(72px, 9vw, 130px);
+  background: linear-gradient(172deg, var(--red-bright), var(--red) 42%, var(--red-deep));
+  color: var(--on-red);
+  clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
+  overflow: hidden;
+}
+.bene-symbol {
+  position: absolute;
+  left: -10%;
+  top: 6%;
+  width: min(80vw, 620px);
+  opacity: .07;
+  pointer-events: none;
+}
+.bene-head { position: relative; display: grid; gap: 16px; }
+.bene-head p { max-width: 26rem; color: var(--on-red-dim); font-size: 1.1875rem; }
+
+.bene-grid {
+  position: relative;
+  display: grid;
+  margin-top: clamp(36px, 5vw, 64px);
+  border-top: 1px solid var(--line-red);
+}
+.bene {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 6px;
+  border-bottom: 1px solid var(--line-red);
+  isolation: isolate;
+  transition: color .35s ease;
+}
+.bene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--white);
+  clip-path: polygon(-30% 0, -30% 0, -60% 100%, -60% 100%);
+  transition: clip-path .6s var(--ease);
+}
+.bene-n { font-size: 2.1rem; opacity: .9; min-width: 1.5em; }
+.bene h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -.005em; }
+.bene .icon { width: 32px; height: 32px; }
+
+@media (hover: hover) {
+  .bene:hover { color: var(--red); }
+  .bene:hover::before { clip-path: polygon(-30% 0, 130% 0, 100% 100%, -60% 100%); }
+}
+
+/* ---------- Como funciona ---------- */
+.como { background: var(--paper); padding-block: clamp(72px, 10vw, 140px); }
+.como-steps {
+  display: grid;
+  gap: 34px;
+  margin-top: clamp(36px, 5vw, 64px);
+}
+.como-step { position: relative; padding-top: 26px; border-top: 2px solid var(--line); }
+.como-step::before {
+  content: "";
+  position: absolute;
+  inset: -2px 0 auto 0;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s var(--ease);
+  transition-delay: calc(var(--i, 0) * .22s + .1s);
+}
+.como-step.is-in::before { transform: scaleX(1); }
+.como-n { display: block; width: max-content; color: var(--red); font-size: clamp(4.4rem, 3rem + 5vw, 7.4rem); }
+.como-step h3 { margin-top: 12px; font-size: 1.5rem; font-weight: 700; font-stretch: 90%; letter-spacing: -.01em; line-height: 1.15; }
+.como-step p { max-width: 21rem; margin-top: 8px; color: var(--ink-2); }
+
+/* ---------- Chamada + ficha ---------- */
+.apply {
+  position: relative;
+  padding-block: clamp(64px, 8vw, 120px);
+  background: var(--white);
+  overflow: hidden;
+  isolation: isolate;
+}
+.apply-red {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  height: 540px;
+  background: linear-gradient(172deg, var(--red-bright), var(--red) 46%, var(--red-deep));
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);
+}
+.apply-symbol {
+  position: absolute;
+  left: -16%;
+  top: 150px;
+  z-index: -1;
+  width: min(86vw, 560px);
+  opacity: .07;
+  pointer-events: none;
+}
+.apply-in { display: grid; gap: 34px; }
+.pitch { display: grid; gap: 18px; color: var(--on-red); }
+.pitch h2 { font-size: clamp(3.3rem, 1.8rem + 5.6vw, 5.7rem); line-height: .95; }
+.pitch h2 span { display: block; }
+.pitch > p { max-width: 24rem; color: var(--on-red-dim); font-size: 1.1875rem; }
+.pitch-list { display: none; }
+.pitch-wa { display: none; }
+
+/* ---------- Telas maiores ---------- */
+@media (min-width: 700px) {
+  .bene-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--line-red); }
+  .bene {
+    height: 100%;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr;
+    align-items: start;
+    gap: 44px 18px;
+    min-height: 210px;
+    padding: 24px 24px 28px;
+    border-right: 1px solid var(--line-red);
+  }
+  .bene-n { font-size: 2.6rem; }
+  .bene h3 { grid-column: 1 / -1; grid-row: 2; align-self: end; font-size: 1.55rem; max-width: 12em; }
+  .bene .icon { grid-column: 2; grid-row: 1; width: 42px; height: 42px; stroke-width: 1.5; }
+  .como-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+}
+
+@media (min-width: 1000px) {
+  .sobre-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; }
+  .bene-head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  .bene-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bene { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: color .35s ease, transform .5s var(--ease); }
+
+  .apply-red {
+    inset: 0;
+    height: auto;
+    clip-path: polygon(0 0, 50% 0, calc(50% - 230px) 100%, 0 100%);
+  }
+  .apply-symbol { left: -8%; top: auto; bottom: -12%; width: min(46vw, 620px); }
+  .apply-in { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(48px, 7vw, 110px); align-items: start; }
+  .pitch { position: sticky; top: 110px; gap: 24px; padding-top: 12px; }
+  .pitch-list { display: grid; gap: 12px; max-width: 22rem; }
+  .pitch-list li { display: flex; align-items: center; gap: 12px; font-weight: 500; }
+  .pitch-list .icon { flex: none; width: 22px; height: 22px; stroke-width: 2.25; }
+  .pitch-wa { display: grid; gap: 2px; margin-top: 8px; }
+  .pitch-wa > span { color: var(--on-red-dim); font-size: .9375rem; }
+  .pitch-wa a { font-size: 2.3rem; text-decoration: none; font-variant-numeric: tabular-nums; }
+  .pitch-wa a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .pitch-wa a:focus-visible { outline: 3px solid var(--white); outline-offset: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+  .pilar { transform: none; }
+  .bene { transform: none; }
+}

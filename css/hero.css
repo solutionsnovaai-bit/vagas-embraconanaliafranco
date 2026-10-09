@@ -1,0 +1,411 @@
+/* ==========================================================================
+   Abertura (logo se revelando) e hero dividido na diagonal.
+   A tela vermelha da abertura se abre e vira o painel vermelho do hero.
+   ========================================================================== */
+
+/* ---------- Abertura ----------
+   1. três lâminas vermelhas cobrem a tela na diagonal
+   2. o logo se revela: a mão se abre, as palavras entram, o slogan fecha
+   3. as lâminas se abrem em camadas e param em cima da diagonal do hero */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--white);
+  pointer-events: none;
+  /* rede de segurança: se o script não rodar, a abertura some sozinha */
+  animation: intro-safety .5s linear 5.4s forwards;
+}
+.intro-blade, .intro-panel {
+  position: absolute;
+  inset: 0;
+  animation: blade-in .68s var(--ease-in-out) both;
+}
+.intro-blade--a { background: var(--red-deep); }
+.intro-blade--b { background: #bf0a14; animation-delay: .08s; }
+.intro-panel {
+  background: linear-gradient(168deg, var(--red-bright), var(--red) 46%, var(--red-deep));
+  animation-delay: .16s;
+}
+.intro-stack {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  color: var(--on-red);
+  animation: settle 1.5s var(--ease) .55s both;
+}
+.intro-logo { --logo-w: min(66vw, 340px); transform-origin: 0 0; }
+.intro-ring {
+  position: absolute;
+  left: 76%;
+  top: 38%;
+  width: 30%;
+  aspect-ratio: 1;
+  margin: -15% 0 0 -15%;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  opacity: 0;
+  animation: ring 1.1s var(--ease) .78s forwards;
+}
+.intro .lg-mao {
+  transform-origin: 76% 38%;
+  animation: mao-in 1s var(--ease) .5s both;
+}
+.intro .lg-consorcio { animation: wipe-in .7s var(--ease) .9s both; }
+.intro .lg-embracon { animation: wipe-in .85s var(--ease) 1.04s both; }
+.intro-tag { animation: tag-in 1s var(--ease) 1.3s both; white-space: nowrap; }
+.intro-load { position: relative; }
+.intro-bar {
+  display: block;
+  width: min(46vw, 220px);
+  height: 2px;
+  background: var(--line-red);
+  overflow: hidden;
+}
+.intro-bar i {
+  display: block;
+  height: 100%;
+  background: var(--white);
+  transform-origin: left;
+  animation: bar-fill 1.5s var(--ease-in-out) .62s both;
+}
+.intro-load b {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-50%);
+}
+
+@keyframes blade-in {
+  from { clip-path: polygon(130% 0, 130% 0, 130% 100%, 106% 100%); }
+  to   { clip-path: polygon(-6% 0, 130% 0, 130% 100%, -30% 100%); }
+}
+@keyframes settle { from { transform: scale(1.07); } to { transform: none; } }
+@keyframes ring {
+  from { opacity: .75; transform: scale(.2); }
+  to   { opacity: 0; transform: scale(2.7); }
+}
+@keyframes mao-in {
+  from { clip-path: circle(0% at 76% 38%); transform: rotate(-26deg) scale(.7); }
+  to   { clip-path: circle(80% at 76% 38%); transform: none; }
+}
+@keyframes wipe-in {
+  from { clip-path: inset(0 100% 0 0); transform: translateX(-4%); }
+  to   { clip-path: inset(0 0 0 0); transform: none; }
+}
+@keyframes tag-in {
+  from { opacity: 0; letter-spacing: .7em; }
+  to   { opacity: 1; letter-spacing: .26em; }
+}
+@keyframes bar-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes intro-safety { to { opacity: 0; visibility: hidden; } }
+
+/* ---------- Hero ---------- */
+.hero {
+  --hero-h: clamp(760px, 100vh, 880px);
+  --sx: 124%;
+  --tan: .56;
+  position: relative;
+  height: var(--hero-h);
+  background: var(--white);
+  overflow: hidden;
+  isolation: isolate;
+}
+@supports (height: 100svh) {
+  .hero { --hero-h: clamp(760px, 100svh, 880px); }
+}
+
+.hero-red {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(168deg, var(--red-bright), var(--red) 46%, var(--red-deep));
+  /* --shift cresce com a rolagem: o vermelho avança um pouco enquanto o hero sai da tela */
+  clip-path: polygon(calc(var(--sx) - var(--shift, 0%)) 0, 100% 0, 100% 100%, calc(var(--sx) - var(--shift, 0%) - var(--hero-h) * var(--tan)) 100%);
+}
+.hero-symbol {
+  position: absolute;
+  right: -14%;
+  bottom: -6%;
+  z-index: -1;
+  width: min(74vw, 620px);
+  opacity: .08;
+  pointer-events: none;
+}
+
+.hero-top {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 70px;
+  padding-inline: max(var(--gutter), calc((100% - 1440px) / 2 + var(--gutter)));
+}
+.hero-top .logo { --logo-w: 116px; }
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-size: .875rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.kicker i {
+  width: 14px;
+  height: 14px;
+  background: var(--red);
+  transform: skewX(calc(var(--angle) * -1));
+}
+.hero-top .kicker { display: none; }
+
+.hero-inner {
+  position: relative;
+  height: 100%;
+  padding: 92px var(--gutter) 0;
+}
+.hero-copy { position: static; }
+.hero-copy .kicker { margin-bottom: 14px; }
+
+.hero-title { font-size: clamp(4.4rem, 22vw, 7.2rem); }
+.hero-title .line {
+  display: block;
+  white-space: nowrap;
+  /* máscara só em cima e embaixo: as letras sobem por trás dela */
+  clip-path: inset(0 -100vw 0 -100vw);
+}
+.hero-title .line--red { color: var(--red); }
+.hero-title .ch { display: inline-block; will-change: transform; }
+
+.hero-role {
+  margin-top: 10px;
+  font-size: clamp(1.45rem, 1rem + 2.2vw, 2.4rem);
+  font-weight: 500;
+  font-stretch: 88%;
+  letter-spacing: -.01em;
+  line-height: 1.1;
+  max-width: 7em;
+}
+.hero-lede {
+  max-width: 8.9rem;
+  margin-top: 14px;
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.hero-cta {
+  position: absolute;
+  inset: auto var(--gutter) 22px;
+  z-index: 5;
+  display: grid;
+  gap: 12px;
+}
+.hero-cta .btn { --btn-bg: var(--white); --btn-bg-hover: var(--white); --btn-fg: var(--red); --focus-ring: var(--white); width: 100%; }
+.hero-cta .link { display: none; }
+
+.hero-figure {
+  position: absolute;
+  right: 5%;
+  top: calc(130px + 40vw);
+  bottom: 96px;
+  z-index: 3;
+  aspect-ratio: 450 / 1251;
+  pointer-events: none;
+}
+.hero-figure img { position: relative; z-index: 1; width: 100%; height: 100%; }
+.hero-shadow {
+  position: absolute;
+  left: 8%;
+  right: 4%;
+  bottom: -1.2%;
+  height: 4.5%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(60, 0, 4, .42), transparent);
+}
+
+.hero-side { display: none; }
+.scroll-cue { display: none; }
+
+/* ---------- Hero no tablet: sobra espaço à esquerda, o botão volta a ser vermelho ---------- */
+@media (min-width: 600px) and (max-width: 999px) {
+  .hero { --sx: 112%; --tan: .6; }
+  .hero-inner { padding-top: 104px; }
+  .hero-title { font-size: clamp(6.4rem, 17vw, 9.4rem); }
+  .hero-lede { max-width: 19rem; font-size: 1.125rem; }
+  .hero-cta { position: static; display: flex; margin-top: 30px; }
+  .hero-cta .btn { --btn-bg: var(--red); --btn-bg-hover: var(--red-deep); --btn-fg: var(--on-red); --focus-ring: var(--ink); width: auto; }
+  .hero-figure { right: 5%; top: auto; bottom: 40px; height: 76%; }
+  .hero-role { max-width: none; }
+}
+
+/* ---------- Hero no desktop: três colunas, a pessoa em cima da diagonal ---------- */
+@media (min-width: 1000px) {
+  .hero {
+    --hero-h: clamp(660px, 100vh, 900px);
+    --sx: 57%;
+    --tan: .2425;
+  }
+  @supports (height: 100svh) {
+    .hero { --hero-h: clamp(660px, 100svh, 900px); }
+  }
+  .hero-top .logo { display: none; }
+  .hero-top .kicker { display: inline-flex; }
+  .hero-copy .kicker { display: none; }
+  .hero-symbol { right: -7%; bottom: -16%; width: min(44vw, 640px); }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 25fr) minmax(0, 35fr);
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-top: 0;
+  }
+  .hero-copy { position: relative; z-index: 2; align-self: center; padding-top: 34px; container-type: inline-size; }
+  .hero-title { font-size: clamp(6rem, 10.4vw, 11rem); }
+  @supports (font-size: 1cqi) {
+    .hero-title { font-size: clamp(6rem, 28.6cqi, 12rem); }
+  }
+  .hero-role { max-width: none; margin-top: 14px; }
+  .hero-lede { max-width: 21rem; margin-top: 18px; font-size: 1.125rem; }
+  .hero-cta {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 30px;
+    margin-top: 34px;
+  }
+  .hero-cta .btn { --btn-bg: var(--red); --btn-bg-hover: var(--red-deep); --btn-fg: var(--on-red); --focus-ring: var(--ink); width: auto; }
+  .hero-cta .link { display: inline-flex; }
+
+  .hero-figure {
+    position: relative;
+    inset: auto;
+    top: auto;
+    grid-column: 2;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+  .hero-figure img {
+    position: absolute;
+    left: 50%;
+    bottom: 2.5%;
+    width: auto;
+    max-width: none;
+    height: 93%;
+    translate: -50% 0;
+  }
+  .hero-shadow { left: 12%; right: 12%; bottom: 1.6%; height: 4%; }
+
+  .hero-side {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    align-self: center;
+    justify-items: start;
+    gap: 26px;
+    padding-left: clamp(20px, 3.4vw, 64px);
+    padding-top: 20px;
+    color: var(--on-red);
+  }
+  .hero-side .logo { --logo-w: min(100%, 330px); }
+  .hero-side .tagline { font-size: clamp(.62rem, .92vw, .78rem); letter-spacing: .22em; white-space: nowrap; }
+  .hero-points { display: grid; width: 100%; max-width: 330px; }
+  .hero-points li {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line-red);
+    font-weight: 500;
+  }
+  .hero-points li:first-child { border-top: 1px solid var(--line-red); }
+  .hero-points b { font-size: 1.35rem; min-width: 1.6em; }
+  .hero-call { display: grid; gap: 4px; }
+  .hero-call > span { font-size: clamp(1.1rem, 1.72vw, 1.5rem); text-wrap: balance; }
+  .hero-call a {
+    font-size: clamp(2rem, 2.9vw, 2.9rem);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .hero-call a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .hero-call a:focus-visible { outline: 3px solid var(--white); outline-offset: 6px; }
+
+  .scroll-cue {
+    position: absolute;
+    left: max(var(--gutter), calc((100% - 1440px) / 2 + var(--gutter)));
+    bottom: 26px;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink-2);
+    font-size: .8125rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .scroll-cue i {
+    position: relative;
+    width: 44px;
+    height: 1.5px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .scroll-cue i::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--red);
+    animation: cue 2.2s var(--ease-in-out) infinite;
+  }
+  .scroll-cue:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+}
+@keyframes cue {
+  0% { transform: translateX(-100%); }
+  55%, 100% { transform: translateX(100%); }
+}
+
+/* ---------- Entrada do hero, disparada quando a abertura termina ---------- */
+html.intro-armed:not(.hero-in) .hero-title .ch { transform: translateY(112%); }
+html.intro-armed:not(.hero-in) [data-hero] { opacity: 0; transform: translateY(24px); }
+html.intro-armed:not(.hero-in) .hero-figure { clip-path: inset(100% -20% -8% -20%); transform: translateY(5%); }
+html.intro-armed:not(.hero-in) .hero-shadow { opacity: 0; }
+html.intro-armed:not(.hero-in) .hero-side .logo { visibility: hidden; }
+html.intro-armed.hero-in:not(.intro-done) .hero-side .logo { visibility: hidden; }
+
+html.hero-in .hero-title { animation: squeeze 1.25s var(--ease) .1s both; }
+html.hero-in .hero-title .ch {
+  transition: transform .95s var(--ease);
+  transition-delay: calc(.18s + var(--c, 0) * .045s);
+}
+html.hero-in [data-hero] {
+  transition: opacity .8s var(--ease), transform .9s var(--ease);
+  transition-delay: calc(.45s + var(--h, 0) * .09s);
+}
+html.hero-in .hero-figure {
+  /* a pessoa sobe por trás de uma máscara */
+  clip-path: inset(-6% -20% -8% -20%);
+  transition: clip-path 1.2s var(--ease-in-out), transform 1.4s var(--ease);
+  transition-delay: .1s;
+}
+html.hero-in .hero-shadow { transition: opacity .9s ease 1s; }
+@keyframes squeeze { from { font-stretch: 112%; } to { font-stretch: 62%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { animation: intro-safety .3s linear .9s forwards; }
+  .intro .lg-mao, .intro .lg-consorcio, .intro .lg-embracon, .intro-tag, .intro-bar i,
+  .intro-blade, .intro-panel, .intro-stack { animation: none; }
+  .intro-ring { display: none; }
+  html.hero-in .hero-title { animation: none; }
+  .scroll-cue i::after { animation: none; }
+}

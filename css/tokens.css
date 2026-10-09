@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Marca: cores, fonte e medidas. Tudo o que define o visual começa aqui.
+   Sistema da página: fundo branco, vermelho oficial e uma diagonal que se
+   repete do hero ao rodapé (painéis, botões, barras da ficha).
+   ========================================================================== */
+
+@font-face {
+  font-family: "Archivo Var";
+  src: url("../assets/fonts/archivo-variavel.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* vermelho e branco oficiais */
+  --red: #d2101a;
+  --red-bright: #e0161e;
+  --red-deep: #a8060f;
+  --white: #ffffff;
+  --paper: #f7f4f3;
+  --line: #e7e0de;
+
+  /* tinta */
+  --ink: #1d1d1b;
+  --ink-2: #57514f;
+  --ink-3: #8c8583;
+  --ghost: #c5bdba;
+
+  /* sobre o vermelho */
+  --on-red: #ffffff;
+  --on-red-dim: rgba(255, 255, 255, .82);
+  --line-red: rgba(255, 255, 255, .3);
+
+  /* estados da ficha */
+  --ok: #1c8a4a;
+  --ok-wash: #e9f6ee;
+  --warn: #8a4b00;
+  --warn-wash: #fff4e0;
+
+  /* a diagonal da arte: 13,6 graus */
+  --angle: 13.63deg;
+  --tan: .2425;
+
+  --font: "Archivo Var", "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --ease-in-out: cubic-bezier(.7, 0, .2, 1);
+
+  --gutter: 20px;
+  --wrap: 1240px;
+}
+
+@media (min-width: 1000px) {
+  :root { --gutter: 44px; }
+}
