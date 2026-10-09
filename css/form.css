@@ -190,6 +190,12 @@
 .send-area { display: grid; gap: 14px; padding-top: 22px; border-top: 1px solid var(--line); }
 .status { min-height: 1.4em; color: var(--ink-2); font-size: .9375rem; }
 .status.is-ready { color: var(--ok); font-weight: 700; }
+/* dois botões de envio: a pessoa escolhe quem recebe a ficha */
+.send-label { font-weight: 700; }
+.send-opts { display: grid; gap: 12px; }
+.btn--quem { justify-content: flex-start; gap: 16px; padding-block: 12px; text-align: left; }
+.quem { display: grid; gap: 2px; min-width: 0; line-height: 1.2; }
+.quem small { font-size: .8125rem; font-weight: 500; letter-spacing: 0; opacity: .9; }
 .trust { display: flex; align-items: flex-start; gap: 10px; color: var(--ink-2); font-size: .875rem; line-height: 1.45; }
 .trust .icon { flex: none; width: 18px; height: 18px; margin-top: 1px; }
 
@@ -248,7 +254,7 @@
   .ficha-card { padding: 34px 32px 30px; }
   .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .done-actions { grid-template-columns: 1fr 1fr; }
-  .done-actions .btn:first-child { grid-column: 1 / -1; }
+  .done-actions [data-reenviar] { grid-column: 1 / -1; }
 }
 @media (min-width: 1000px) {
   .ficha-card { padding: 42px 42px 36px; }

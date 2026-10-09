@@ -8,14 +8,25 @@
 (function () {
   var CONFIG = window.VAGAS_CONFIG || {};
   var NUMERO = String(CONFIG.whatsapp || "").replace(/\D/g, "");
+  var ADM = String(CONFIG.whatsappAdm || "").replace(/\D/g, "");
   var form = document.getElementById("ficha-form");
   if (!form || !NUMERO) return;
 
-  var BASE = "https://wa.me/" + NUMERO;
   var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
   var card = document.getElementById("ficha-card");
-  var enviar = document.getElementById("enviar");
-  var reabrir = document.getElementById("reabrir");
+  // Quem pode receber a ficha. Cada botão de envio (data-enviar) e cada botão da tela
+  // seguinte (data-reenviar) aponta para um destes números.
+  var destinos = { whats: NUMERO, adm: ADM };
+  var enviados = {};
+  function comDestino(seletor, attr) {
+    var achados = [];
+    each(document.querySelectorAll(seletor), function (el) {
+      if (destinos[el.getAttribute(attr)]) achados.push(el); else el.hidden = true;
+    });
+    return achados;
+  }
+  var botoes = comDestino("[data-enviar]", "data-enviar");
+  var reenvios = comDestino("[data-reenviar]", "data-reenviar");
   var statusEl = document.getElementById("status");
   var meterText = document.getElementById("meter-text");
   var sent = document.getElementById("sent");
@@ -52,8 +63,7 @@
     each(document.querySelectorAll("[data-" + nome + "-link]"), function (el) { el.href = "https://wa.me/" + numero; });
   }
   publicar(NUMERO, "whats");
-  // Segundo contato (Adm da franquia): só aparece escrito, não recebe as fichas.
-  publicar(String(CONFIG.whatsappAdm || "").replace(/\D/g, ""), "adm");
+  publicar(ADM, "adm");
 
   var fields = Array.prototype.map.call(form.querySelectorAll("[data-field]"), function (el) {
     return {
@@ -112,15 +122,26 @@
     });
     var ready = missing.length === 0;
     meterText.textContent = (required.length - missing.length) + " de " + required.length;
-    statusEl.textContent = ready ? "Tudo certo. É só enviar." : "Falta " + joinList(missing) + ".";
+    statusEl.textContent = ready ? "Tudo certo. Escolha para quem enviar." : "Falta " + joinList(missing) + ".";
     statusEl.classList.toggle("is-ready", ready);
-    // Quando a ficha fica completa, o botão chama a atenção uma vez.
-    if (ready && !wasReady) replay(enviar, "is-ready");
+    // Quando a ficha fica completa, os botões chamam a atenção uma vez.
+    if (ready && !wasReady) botoes.forEach(function (b) { replay(b, "is-ready"); });
     wasReady = ready;
-    var url = BASE + "?text=" + encodeURIComponent(buildMessage());
-    enviar.href = url;
-    reabrir.href = url;
+    var texto = "?text=" + encodeURIComponent(buildMessage());
+    botoes.forEach(function (b) { b.href = "https://wa.me/" + destinos[b.getAttribute("data-enviar")] + texto; });
+    reenvios.forEach(function (b) { b.href = "https://wa.me/" + destinos[b.getAttribute("data-reenviar")] + texto; });
     return ready;
+  }
+
+  // Tela seguinte: quem já recebeu vira "abrir de novo"; quem falta fica em destaque.
+  function pintarReenvios() {
+    reenvios.forEach(function (b) {
+      var feito = !!enviados[b.getAttribute("data-reenviar")];
+      var nome = b.getAttribute("data-nome");
+      b.classList.toggle("btn--line", feito);
+      b.querySelector("[data-reenviar-texto]").textContent =
+        feito ? "Abrir de novo: " + nome : "Enviar também para " + nome;
+    });
   }
 
   // Troca de tela com uma lâmina vermelha cruzando a ficha.
@@ -154,8 +175,8 @@
   });
   form.addEventListener("submit", function (e) { e.preventDefault(); });
 
-  // O botão é um link de verdade: com a ficha completa, o próprio toque abre o WhatsApp.
-  enviar.addEventListener("click", function (e) {
+  // Cada botão é um link de verdade: com a ficha completa, o próprio toque abre o WhatsApp de quem foi escolhido.
+  botoes.forEach(function (enviar) { enviar.addEventListener("click", function (e) {
     required.forEach(function (f) { touched[f.key] = true; });
     if (!refresh()) {
       e.preventDefault();
@@ -169,13 +190,22 @@
       return;
     }
     sent.textContent = buildMessage();
+    enviados = {};
+    enviados[enviar.getAttribute("data-enviar")] = true;
+    pintarReenvios();
     window.setTimeout(function () {
       swap(doneView, formView, function () {
         doneTitle.focus({ preventScroll: true });
         if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: "start" });
       });
     }, 250);
-  });
+  }); });
+
+  // Enviar a mesma ficha para o outro contato (ou abrir de novo a conversa).
+  reenvios.forEach(function (b) { b.addEventListener("click", function () {
+    enviados[b.getAttribute("data-reenviar")] = true;
+    window.setTimeout(pintarReenvios, 600);
+  }); });
 
   document.getElementById("corrigir").addEventListener("click", function () {
     swap(formView, doneView, function () { form.querySelector("input").focus({ preventScroll: true }); });

@@ -1,7 +1,7 @@
 # Vagas abertas: Consultor Comercial
 
 Página de vagas da Franquia Embracon Anália Franco. A pessoa conhece a vaga, preenche a
-ficha de quatro perguntas e o WhatsApp abre com a mensagem pronta. Não tem servidor, banco de
+ficha de quatro perguntas, escolhe para quem enviar e o WhatsApp abre com a mensagem pronta. Não tem servidor, banco de
 dados nem etapa de build: é HTML, CSS e JavaScript puro.
 
 ## Arquivos
@@ -31,15 +31,17 @@ assets/             logotipo, símbolo, foto, fonte, favicon e imagem de compart
 Abra sempre pelo endereço publicado ou por um servidor local (por exemplo
 `python3 -m http.server` dentro da pasta). Aberta direto pelo arquivo, a fonte pode não carregar.
 
-## Trocar o número do WhatsApp
+## Trocar os números do WhatsApp
 
-Abra `js/config.js` e mude `whatsapp` (55 + DDD + número, só os dígitos).
-O número escrito na página é atualizado sozinho. O `index.html` também traz o número
-escrito como reserva para quem abre sem JavaScript; vale trocar lá também (busque por `wa.me`).
+A página tem dois contatos, e os dois recebem fichas: `whatsapp` e `whatsappAdm`, em `js/config.js`
+(55 + DDD + número, só os dígitos). Na ficha há um botão de envio para cada um; depois de enviar
+para um, a tela seguinte oferece enviar a mesma ficha também para o outro. O WhatsApp só abre uma
+conversa por vez, então não existe envio para os dois em um toque só.
 
-O segundo contato que aparece no hero, ao lado da ficha e no rodapé é o `whatsappAdm`, no mesmo
-arquivo. Ele só aparece escrito na página: as fichas continuam chegando no `whatsapp`. O nome e o
-cargo de cada contato ficam no `index.html` (busque por `contato-quem`).
+Os números escritos na página são atualizados sozinhos. O `index.html` também traz os números
+escritos como reserva para quem abre sem JavaScript; vale trocar lá também (busque por `wa.me`).
+O nome e o cargo de cada contato ficam no `index.html`: busque por `contato-quem` (hero, ficha e
+rodapé), `data-enviar` (botões de envio) e `data-nome` (tela depois do envio).
 
 ## Mudar as perguntas da ficha
 

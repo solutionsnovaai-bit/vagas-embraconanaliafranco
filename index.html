@@ -214,8 +214,8 @@
         </li>
         <li class="como-step" data-reveal>
           <span class="como-n display" data-reveal="mask" aria-hidden="true"><span class="m">2</span></span>
-          <h3>Toque em enviar</h3>
-          <p>O WhatsApp abre com a sua ficha já escrita.</p>
+          <h3>Escolha para quem enviar</h3>
+          <p>Rafael ou Thainá: o WhatsApp abre com a sua ficha já escrita.</p>
         </li>
         <li class="como-step" data-reveal>
           <span class="como-n display" data-reveal="mask" aria-hidden="true"><span class="m">3</span></span>
@@ -312,10 +312,17 @@
 
             <div class="send-area">
               <p class="status" id="status" role="status" aria-live="polite"></p>
-              <a class="btn btn--block" id="enviar" href="https://wa.me/5511993016158" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M2.6 3.2 22 12 2.6 20.8l2.7-7.3L14 12 5.3 10.5z"/></svg>
-                Enviar pelo WhatsApp
-              </a>
+              <p class="send-label" id="send-label">Enviar pelo WhatsApp para:</p>
+              <div class="send-opts" role="group" aria-labelledby="send-label">
+                <a class="btn btn--block btn--quem" href="https://wa.me/5511993016158" target="_blank" rel="noopener" data-enviar="whats">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M2.6 3.2 22 12 2.6 20.8l2.7-7.3L14 12 5.3 10.5z"/></svg>
+                  <span class="quem"><b>Rafael Ferraz</b><small>CEO</small></span>
+                </a>
+                <a class="btn btn--block btn--quem" href="https://wa.me/5511930308372" target="_blank" rel="noopener" data-enviar="adm">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M2.6 3.2 22 12 2.6 20.8l2.7-7.3L14 12 5.3 10.5z"/></svg>
+                  <span class="quem"><b>Thainá Moura</b><small>Adm Franquia Anália Franco</small></span>
+                </a>
+              </div>
               <p class="trust"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Seus dados vão só para o WhatsApp da Franquia Embracon Anália Franco e são usados apenas para o processo seletivo. Esta página não guarda nada.</span></p>
             </div>
 
@@ -328,14 +335,18 @@
           <p>Agora é só <strong>tocar em enviar na conversa</strong>. Sem isso a ficha não chega.</p>
           <pre class="bubble" id="sent" tabindex="0" aria-label="Sua mensagem"></pre>
           <div class="done-actions">
-            <a class="btn" id="reabrir" href="https://wa.me/5511993016158" target="_blank" rel="noopener">
+            <a class="btn" href="https://wa.me/5511993016158" target="_blank" rel="noopener" data-reenviar="whats" data-nome="Rafael Ferraz">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M2.6 3.2 22 12 2.6 20.8l2.7-7.3L14 12 5.3 10.5z"/></svg>
-              Abrir o WhatsApp de novo
+              <span data-reenviar-texto>Enviar para Rafael Ferraz</span>
+            </a>
+            <a class="btn" href="https://wa.me/5511930308372" target="_blank" rel="noopener" data-reenviar="adm" data-nome="Thainá Moura">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M2.6 3.2 22 12 2.6 20.8l2.7-7.3L14 12 5.3 10.5z"/></svg>
+              <span data-reenviar-texto>Enviar para Thainá Moura</span>
             </a>
             <button class="btn btn--line" type="button" id="copiar">Copiar a mensagem</button>
             <button class="btn btn--line" type="button" id="corrigir">Corrigir a ficha</button>
           </div>
-          <p>O WhatsApp não abriu? Copie a mensagem e mande para <span class="number" data-whats-text>(11) 9.9301-6158</span>.</p>
+          <p>O WhatsApp não abriu? Copie a mensagem e mande para <span class="number" data-whats-text>(11) 9.9301-6158</span> ou <span class="number" data-adm-text>(11) 9.3030-8372</span>.</p>
         </div>
       </div>
 
